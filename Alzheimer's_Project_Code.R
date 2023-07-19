@@ -3,10 +3,10 @@
 getwd()
 
 ## Sophie
-setwd("/Users/sophielawrence/Documents/Data_Mining_Project")
+#setwd("/Users/sophielawrence/Documents/Data_Mining_Project")
 
 ## Ria
-# setwd("/Users/ria/Downloads/DARWIN-2")
+setwd("/Users/ria/Downloads/Data_mining_project")
 
 ## Load libraries ----
 library("tidyverse")
