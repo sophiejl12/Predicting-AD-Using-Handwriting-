@@ -27,7 +27,7 @@ str(df)
 ## Change class to factor ----
 
 ## Drop ID column ----
-
+df <- df[, -which(names(df) == "ID")]
 
 ###############
 # MODELING ----
