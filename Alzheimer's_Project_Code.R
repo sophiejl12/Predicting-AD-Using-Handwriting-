@@ -25,7 +25,7 @@ df <- read_csv("Alzheimers_data.csv")
 str(df)
 
 ## Change class to factor ----
-
+df$class <- factor(df$class)
 ## Drop ID column ----
 df <- df[, -which(names(df) == "ID")]
 
