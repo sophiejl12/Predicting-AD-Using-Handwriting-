@@ -36,6 +36,16 @@ df <- df[, -which(names(df) == "ID")]
 ## Fit initial Random Forest model ----
 
 ## Tune Random Forest Model ----
+### Set seed 
+set.seed(123)
+
+### Split data set into train and test 
+train <- df %>% dplyr::sample_frac(0.80)
+test <- dplyr::anti_join(df, train, by )
+
+### Separating X and Y 
+train_x <- 
+train_y <- 
 
 ## Fit final rf model ----
 
