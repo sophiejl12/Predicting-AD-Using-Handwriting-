@@ -13,7 +13,7 @@ setwd("/Users/ria/Downloads/Data_mining_project")
 
 ## Load libraries ----
 library("tidyverse")
-
+library("dplyr")
 
 ###############
 # DATA CLEANING ----
@@ -26,8 +26,9 @@ str(df)
 
 ## Change class to factor ----
 df$class <- factor(df$class)
-## Drop ID column ----
-df <- df[, -which(names(df) == "ID")]
+
+## Save cleaned dataset 
+
 
 ###############
 # MODELING ----
@@ -41,7 +42,10 @@ set.seed(123)
 
 ### Split data set into train and test 
 train <- df %>% dplyr::sample_frac(0.80)
-test <- dplyr::anti_join(df, train, by )
+test <- dplyr::anti_join(df, train, by "ID")
+
+## Drop ID column ----
+df <- df[, -which(names(df) == "ID")]
 
 ### Separating X and Y 
 train_x <- 
