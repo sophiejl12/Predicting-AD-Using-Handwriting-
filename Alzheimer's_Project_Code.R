@@ -9,7 +9,7 @@ getwd()
 #setwd("/Users/sophielawrence/Documents/Data_Mining_Project")
 
 ## Ria
-setwd("/Users/ria/Downloads/Data_mining_project")
+#setwd("/Users/ria/Downloads/Data_mining_project")
 
 ## Load libraries ----
 library("tidyverse")
@@ -21,20 +21,20 @@ library("dplyr")
 
 ## Read data ----
 df <- read_csv("Alzheimers_data.csv")
-
+head(df)
 str(df)
 
 ## Change class to factor ----
 df$class <- factor(df$class)
 
+## Mutating variables 
+
+
 ## Save cleaned dataset 
 
-<<<<<<< Updated upstream
-=======
 
-## Drop ID column ----
-df <- df[, -which(names(df) == "ID")]
->>>>>>> Stashed changes
+
+
 
 ###############
 # MODELING ----
