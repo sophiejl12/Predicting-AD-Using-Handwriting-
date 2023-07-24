@@ -29,6 +29,12 @@ df$class <- factor(df$class)
 
 ## Save cleaned dataset 
 
+<<<<<<< Updated upstream
+=======
+
+## Drop ID column ----
+df <- df[, -which(names(df) == "ID")]
+>>>>>>> Stashed changes
 
 ###############
 # MODELING ----
@@ -61,5 +67,7 @@ train_y <-
 ## Feature importance ----
 
 ## Boxplot for most important features vs. class (x-axis) ----
+
 ## Here, either plot the most important features directly (like mean_gmrt_24), 
+
 ## or calculate the mean across all trials for each metric, by group (class = patients/healthy)
