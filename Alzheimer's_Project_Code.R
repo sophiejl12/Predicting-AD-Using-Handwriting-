@@ -11,7 +11,7 @@ getwd()
 ## Ria
 #setwd("/Users/ria/Downloads/Data_mining_project")
 
-## Load libraries ----
+## Loading libraries ----
 library("tidyverse")
 library("dplyr")
 library(randomForest)
@@ -21,35 +21,34 @@ library(caret)
 # DATA CLEANING ----
 ###############
 
-## Read data ----
+## Reading data ----
 df <- read_csv("Alzheimers_data.csv")
 head(df)
 str(df)
 
-## Change class to factor ----
+## Changing class to factor ----
 df$class <- factor(df$class)
 
-## Save cleaned dataset
+## Saving cleaned dataset
 write.csv(df, file = "Alzheimers_data_cleaned.csv", row.names = FALSE)
-
 
 ###############
 # MODELING ----
 ###############
 
-## Fit initial Random Forest model ----
-### Set seed
+## Fitting initial Random Forest model ----
+### Setting seed
 set.seed(125)
 
-### Split data set into train and test
+### Splitting data set into train and test
 train <- df %>% dplyr::sample_frac(0.80)
 test <- dplyr::anti_join(df, train, by = "ID")
 
-## Drop ID column ----
+### Dropping ID column ----
 train <- train[,-which(names(train) == "ID")]
 test <- test[,-which(names(test) == "ID")]
 
-### Separating X and Y
+### Separating X and Y and train and test
 train_x <- train %>% select(-class)
 test_x <- test %>% select(-class)
 train_y <- train %>% select(class)
@@ -57,10 +56,8 @@ test_y <- test %>% select(class)
 test_y <- unlist(test_y)
 train_y <- unlist(train_y)
 
-# Fit random forest
-
+# Fitting random forest 
 rf_model <- randomForest(x = train_x, y = train_y, xtest = test_x, ytest = test_y, importance = TRUE, ntree = 4000)
-
 
 rf_model <-
   randomForest(
@@ -72,7 +69,7 @@ rf_model <-
     ntree = 4000
   )
 
-## Tune Random Forest Model ----
+## Tuning Random Forest Model ----
 mtry <- tuneRF(
   x = train_x,
   y = train_y,
@@ -85,12 +82,12 @@ mtry <- tuneRF(
   plot = TRUE
 )
 
-# Saving and printing best value tree
+## Saving and printing best value tree
 best.m <- mtry[mtry[, 2] == min(mtry[, 2]), 1]
 print(mtry)
 print(best.m)
 
-### Tuning the number of trees
+## Tuning the number of trees
 rf_res_df <-
   data.frame(TRAINING_ERROR = rf_model$err.rate[, 1],
              ITERATION = c(1:4000)) %>%
@@ -103,7 +100,7 @@ best_nrounds <- rf_res_df %>%
 print(best_nrounds)
 
 
-### Fitting final model using best value
+# Fitting final model ----
 rf_model2 <-
   randomForest(
     x = train_x,
@@ -116,16 +113,18 @@ rf_model2 <-
 rf_model2
 ### Error rate: 11.517%
 
-### Feature importance
+### Feature importance ----
 
 rf_features <- as.data.frame(varImp(rf_final_model))
 colnames(rf_features) <- "rf_imp"
-## convert rownames to column
+
+## Converting rownames to column
 rf_features$feature <- rownames(rf_features)
 ## Selecting only relevant columns for mapping
-features <- rf_features %>% dplyr::select(c(feature, rf_imp))
+features <- rf_features %>% dplyr::select(c(feature, rf_imp)) 
+features <- features %>% filter(feature != "ID")
 
-## FIT FINAL MODEL ----
+## Keeping only rows with values over 0 
 keep_features <- rf_features %>% select(rf_imp) %>% filter(rf_imp > 0)
 imp_features <- rownames(keep_features)
 
@@ -136,94 +135,67 @@ imp_features <- rownames(keep_features)
 
 ## Selecting only relevant columns for mapping
 #features <- rf_features %>% dplyr::select(c(feature, rf_imp))
-
-
-
-
-
 #train_x <- train_x %>% select(all_of(imp_features))
 #test_x <- test_x %>% select(all_of(imp_features))
 
-## Tuning model
-#mtry <- tuneRF(
- #y = train_y,
- # xtest = test_x,
-#  ytest = test_y,
- # ntreeTry = 5000,
-#  stepFactor = 1.5,
- # improve = 0.01,
-  #trace = TRUE ,
-  #plot = TRUE
-#)
 
-# Saving and printing best value tree
-#best.m <- mtry[mtry[, 2] == min(mtry[, 2]), 1]
-#print(mtry)
-#print(best.m)
+### Dataset with total importance
 
-# ### Tuning the number of trees
-# rf_res_df <-
-#   data.frame(TRAINING_ERROR = rf_model2$err.rate[, 1],
-#              ITERATION = c(1:5000)) %>%
-#   mutate(MIN = TRAINING_ERROR == min(TRAINING_ERROR))
-# 
-# best_nrounds <- rf_res_df %>%
-#   filter(MIN) %>%
-#   pull(ITERATION)
-# 
-# print(best_nrounds)
-
-### Fitting final model using best value
-#rf_final_model <-
- # randomForest(
-  #  x = train_x,
-  # y = train_y,
-  #  mtry = 19,
-  #  importance = TRUE,
-  #  ntree = 5000
-  #)
-#rf_final_model
-
-
-
+# Using stringr to separate the text in the features column, with text in one column "group" and number in another column "num"
+features <- features %>% mutate(group = stringr::str_remove_all(feature, pattern = "\\d+"))
+  
+  
+# Calculating the total of "rf_imp" by group and the mean of "rf_imp"
+features_grouped <- features %>%
+  group_by(group) %>%
+  mutate(total_imp = sum(rf_imp),
+         mean_imp = mean(rf_imp)) %>% select(c(3:5)) %>%
+  distinct(group, .keep_all = TRUE) %>%
+  arrange(desc(total_imp))
 
 # Making features plottable
-top_10_features <- head(rf_features, 10)
-### Plot the feature importance
+top_10_features <- head(features_grouped, 10)
+top_10_features$group <- recode(top_10_features$group,
+                                "paper_time"          = "Paper Time",
+                                "air_time"            = "Air Time",
+                                "disp_index"          = "Disp Index",
+                                "total_time"          = "Total Time",
+                                "mean_jerk_on_paper"  = "Mean Jerk on Paper",
+                                "mean_speed_on_paper" = "Mean Speed on Paper",
+                                "mean_gmrt"           = "Mean GMRT",
+                                "gmrt_on_paper"       = "GMRT on Paper",
+                                "mean_acc_in_air"     = "Mean Acceleration in Air",
+                                "mean_jerk_in_air"    = "Mean Jerk in Air")
+
+### Ploting the feature importance
 plot <- top_10_features %>%
-  ggplot(aes(x =rf_imp, y = feature, color = "#2E86AB")) +
+  ggplot(aes(x = total_imp, y = group, color = "#2E86AB")) +
   # Creates a point for the feature importance
   geom_point(position = position_dodge(0.5)) 
 
 print(plot)
-```
+
 plot +
   # Connecting line between 0 and the feature
-  geom_linerange(aes(xmin = 0, xmax = rf_imp),
+  geom_linerange(aes(xmin = 0, xmax = total_imp),
                  linetype = "solid",
                  position = position_dodge(.5)) +
   # Vertical line at 0
   geom_vline(xintercept = 0,
              linetype = "solid",
              color = "grey70") +
-  # Adjust the scale if you need to based on your importance
-  scale_x_continuous(limits = c(-1, 5)) +
+  # Adjusting scale
+  scale_x_continuous(limits = c(-1, 11)) +
   # Label the x and y axes
   labs(x = "Importance", y = "Feature") +
-  # Make the theme pretty
+  # Setting theme
   theme_bw() +
   theme(legend.position = "none",
         text = element_text(family = "serif")) +
   guides(color = guide_legend(title = NULL)) +
   # Plot them in order of importance
-  scale_y_discrete(limits = top_10_features$feature[order(top_10_features$rf_imp, decreasing = FALSE)])
+  scale_y_discrete(limits = top_10_features$feature[order(top_10_features$total_imp, decreasing = FALSE)])
 
-# Subset the 'features$feature' vector to only include the top 10 features
-
-## convert rownames to column
-
-
-## Selecting only relevant columns for mapping
 
 
 # Plotting with ggplot
@@ -231,9 +203,9 @@ plot +
 
 # Improving plot
 
+## Get accuracy ----
 ```
 
-## Get accuracy ----
 
 ###############
 # FIGURES ----
