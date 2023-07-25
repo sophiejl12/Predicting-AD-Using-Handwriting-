@@ -38,15 +38,19 @@ write.csv(df, file = "Alzheimers_data_cleaned.csv", row.names = FALSE)
 ## Fit initial Random Forest model ----
 
 ## Tune Random Forest Model ----
+### Randomly sort data 
+
 ### Set seed 
-set.seed(123)
+set.seed(128)
 
 ### Split data set into train and test 
 train <- df %>% dplyr::sample_frac(0.80)
 test <- dplyr::anti_join(df, train, by = "ID")
 
 ## Drop ID column ----
-df <- df[, -which(names(df) == "ID")]
+train <- train[, -which(names(train) == "ID")]
+test <- test[, -which(names(test) == "ID")]
+
 
 ### Separating X and Y 
 train_x <- test %>% select(-class)
@@ -59,7 +63,7 @@ train_y <- unlist(train_y)
 ## Fitting rf model ----
 # Loading random forest 
 library(randomForest)
-rf_model <- randomForest(x = train_x, y = train_y, xtest = test_x, ytest = test_y, importance = TRUE, ntree = 4000)
+rf_model <- randomForest(x = train_x, y = train_y, xtest = test_x, ytest = test_y, importance = TRUE, ntree = 5000)
 
 ## Tuning model
 mtry <- tuneRF(
@@ -67,9 +71,9 @@ mtry <- tuneRF(
   y = train_y,
   xtest = test_x,
   ytest = test_y,
-  ntreeTry = 400 ,
-  stepFactor =1.5 ,
-  improve =0.01 ,
+  ntreeTry = 10000,
+  stepFactor =1.5,
+  improve =0.001,
   trace =TRUE ,
   plot = TRUE
 )
@@ -83,7 +87,7 @@ print(best.m)
 rf_res_df <-
   data.frame(
     TRAINING_ERROR = rf_model$err.rate[,1],
-    ITERATION = c(1:4000)
+    ITERATION = c(1:10000)
   ) %>%
   mutate(MIN = TRAINING_ERROR == min(TRAINING_ERROR))
 
@@ -101,7 +105,7 @@ rf_final_model <-
     y = train_y,
     mtry = 21,
     importance = TRUE,
-    ntree = 80
+    ntree = 3000
   )
 rf_final_model
 
