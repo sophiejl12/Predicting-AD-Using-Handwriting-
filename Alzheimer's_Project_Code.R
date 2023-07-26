@@ -16,7 +16,7 @@ library("tidyverse")
 library("dplyr")
 library(randomForest)
 library(caret)
-library(dataMaid)
+#install.packages("rstatix")
 library(rstatix)
 
 ###############
@@ -133,21 +133,6 @@ rf_features$feature <- rownames(rf_features)
 features <- rf_features %>% dplyr::select(c(feature, rf_imp)) 
 features <- features %>% filter(feature != "ID")
 
-## Keeping only rows with values over 0 
-keep_features <- rf_features %>% select(rf_imp) %>% filter(rf_imp > 0)
-imp_features <- rownames(keep_features)
-
-
-## convert rownames to column
-#rf_features <- as.data.frame(varImp(rf_final_model))
-#rf_features$feature <- rownames(rf_features)
-
-## Selecting only relevant columns for mapping
-#features <- rf_features %>% dplyr::select(c(feature, rf_imp))
-#train_x <- train_x %>% select(all_of(imp_features))
-#test_x <- test_x %>% select(all_of(imp_features))
-
-
 ### Dataset with total importance
 
 # Using stringr to separate the text in the features column, with text in one column "group" and number in another column "num"
@@ -178,9 +163,10 @@ top_10_features$group <- recode(top_10_features$group,
 
 ### Ploting the feature importance
 plot <- top_10_features %>%
-  ggplot(aes(x = total_imp, y = group, color = "#2E86AB")) +
+  ggplot(aes(x = total_imp, y = group, color = "#2E86AB", )) +
   # Creates a point for the feature importance
-  geom_point(position = position_dodge(0.5)) 
+  geom_point(position = position_dodge(0.5)) +
+  ggtitle("Top Ten Important Features")
 
 print(plot)
 
@@ -211,16 +197,13 @@ plot +
 # Plotting with ggplot
 library(ggplot2)
 library("patchwork")
-# Improving plot
 
-## Get accuracy ----
-
-
-
+# Adding total time and GMRT on paper to original dataset 
+df_total <- df %>% mutate(total_time = (total_time1 + total_time2 + total_time3 + total_time4 + total_time5+total_time6+total_time7+total_time8+total_time9+total_time10+total_time11+total_time12+total_time13+total_time14+total_time15+total_time16+total_time17+total_time18+total_time19+total_time20+total_time21+total_time22+total_time23+total_time24+total_time25))
+summary(df_total)
+         
 ###############
 # FIGURES ----
-
-## Feature importance ----
 
 ## Boxplot for most important features vs. class (x-axis) ----
 
