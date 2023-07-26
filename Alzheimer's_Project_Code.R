@@ -9,15 +9,15 @@ getwd()
 #setwd("/Users/sophielawrence/Documents/Data_Mining_Project")
 
 ##Ria
-setwd("/Users/ria/Downloads/Data_mining_project")
+# setwd("/Users/ria/Downloads/Data_mining_project")
 
 ## Loading libraries ----
 library("tidyverse")
 library("dplyr")
 library(randomForest)
 library(caret)
-install.packages("dataMaid")
 library(dataMaid)
+library(rstatix)
 
 ###############
 # DATA CLEANING ----
@@ -31,10 +31,12 @@ str(df)
 ## Changing class to factor ----
 df$class <- factor(df$class)
 
-# get rid of the outliers
-df <- df[!(row.names(df) %in% c("169"))]
+## Replace outliers with mean values
 
-dataMaid::identifyOutliers(df$total_time23, nMax = 1)
+df <- df %>%
+  group_by(class) %>%
+  mutate(across(where(is.numeric), ~ ifelse(is_extreme(.), mean(., na.rm = TRUE), .)))
+
 
 ## Saving cleaned dataset
 write.csv(df, file = "Alzheimers_data_cleaned.csv", row.names = FALSE)
@@ -112,9 +114,9 @@ rf_model2 <-
   randomForest(
     x = train_x,
     y = train_y,
-    mtry = 14,
+    mtry = 31,
     importance = TRUE,
-    ntree = 4000
+    ntree = 1500
   )
 
 rf_model2
