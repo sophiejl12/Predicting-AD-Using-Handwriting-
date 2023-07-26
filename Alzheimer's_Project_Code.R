@@ -184,7 +184,7 @@ plot <- top_10_features %>%
 
 print(plot)
 
-plot +
+p1 <-plot +
   # Connecting line between 0 and the feature
   geom_linerange(aes(xmin = 0, xmax = total_imp),
                  linetype = "solid",
@@ -212,8 +212,14 @@ plot +
 library(ggplot2)
 library("patchwork")
 
-# Improving plot
+# Adding total time and GMRT on paper to original dataset
+df_total <- df %>% mutate(total_time = (total_time1 + total_time2 + total_time3 + total_time4 + total_time5+total_time6+total_time7+total_time8+total_time9+total_time10+total_time11+total_time12+total_time13+total_time14+total_time15+total_time16+total_time17+total_time18+total_time19+total_time20+total_time21+total_time22+total_time23+total_time24+total_time25))
+summary(df_total)
 
+
+df_total <- df_total %>%
+  group_by(class) %>%
+  mutate(across(where(is.numeric), ~ ifelse(is_extreme(.), mean(., na.rm = TRUE), .)))
 ## Get accuracy ----
 
 
@@ -225,9 +231,26 @@ library("patchwork")
 
 ## Boxplot for most important features vs. class (x-axis) ----
 
-p2 <- ggplot(data = df, aes(x = class, y = total_time23, fill = class)) + geom_boxplot() + theme_minimal()
+p2 <- ggplot(data = df_total3, aes(x = class, y = gmrt_on_paper, fill = class)) + geom_boxplot() + theme_minimal() +theme(legend.position = "none",
+                                                                                                                      text = element_text(family = "serif", face = "bold" )) +
+  guides(color = guide_legend(title = NULL)) +
+  ggtitle("Total gmrt on paper") 
 plot(p2)
 
+p3 <-
+  ggplot(data = df_total, aes(x = total_time, fill = class)) + geom_density(alpha = 0.5) + theme_minimal() + theme(legend.position = "none",
+                                                                                                                   text = element_text(family = "serif", face = "bold" )) +
+  guides(color = guide_legend(title = NULL)) +
+ggtitle("Total Writing Time of Healthy Participants Compared to Patients")
+plot(p3)
+
+
+
+df_total2 <- df_total %>% select(c(ID, total_time))
+
+# Adding GMRT on paper to original dataset
+df_total3 <- df %>% mutate(gmrt_on_paper = (gmrt_on_paper1 + gmrt_on_paper2 + gmrt_on_paper3 + gmrt_on_paper4 + gmrt_on_paper5+gmrt_on_paper6+gmrt_on_paper7+gmrt_on_paper8+gmrt_on_paper9+gmrt_on_paper10+gmrt_on_paper11+gmrt_on_paper12+gmrt_on_paper13+gmrt_on_paper14+gmrt_on_paper15+gmrt_on_paper16+gmrt_on_paper17+gmrt_on_paper18+gmrt_on_paper19+gmrt_on_paper20+gmrt_on_paper21+gmrt_on_paper22+gmrt_on_paper23+gmrt_on_paper24+gmrt_on_paper25))
+summary(df_total3)
 ## Here, either plot the most important features directly (like mean_gmrt_24),
 
 ## or calculate the mean across all trials for each metric, by group (class = patients/healthy)
