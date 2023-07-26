@@ -8,8 +8,8 @@ getwd()
 ## Sophie
 #setwd("/Users/sophielawrence/Documents/Data_Mining_Project")
 
-## Ria
-#setwd("/Users/ria/Downloads/Data_mining_project")
+##Ria
+setwd("/Users/ria/Downloads/Data_mining_project")
 
 ## Loading libraries ----
 library("tidyverse")
@@ -115,7 +115,7 @@ rf_model2
 
 ### Feature importance ----
 
-rf_features <- as.data.frame(varImp(rf_final_model))
+rf_features <- as.data.frame(varImp(rf_model2))
 colnames(rf_features) <- "rf_imp"
 
 ## Converting rownames to column
@@ -187,24 +187,24 @@ plot +
   # Adjusting scale
   scale_x_continuous(limits = c(-1, 11)) +
   # Label the x and y axes
-  labs(x = "Importance", y = "Feature") +
+  labs(x = "Importance", y = "group") +
   # Setting theme
   theme_bw() +
   theme(legend.position = "none",
         text = element_text(family = "serif")) +
   guides(color = guide_legend(title = NULL)) +
   # Plot them in order of importance
-  scale_y_discrete(limits = top_10_features$feature[order(top_10_features$total_imp, decreasing = FALSE)])
+  scale_y_discrete(limits = top_10_features$group[order(top_10_features$total_imp, decreasing = FALSE)])
 
 
 
 # Plotting with ggplot
-
+library(ggplot2)
 
 # Improving plot
 
 ## Get accuracy ----
-```
+
 
 
 ###############
@@ -213,7 +213,7 @@ plot +
 ## Feature importance ----
 
 ## Boxplot for most important features vs. class (x-axis) ----
-
+ggplot(data=, aes(class)) + geom_boxplot()
 ## Here, either plot the most important features directly (like mean_gmrt_24),
 
 ## or calculate the mean across all trials for each metric, by group (class = patients/healthy)
