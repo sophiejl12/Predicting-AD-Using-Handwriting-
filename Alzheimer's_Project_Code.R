@@ -6,7 +6,7 @@
 getwd()
 
 ## Sophie
-#setwd("/Users/sophielawrence/Documents/Data_Mining_Project")
+setwd("/Users/sophielawrence/Documents/Data_Mining_Project")
 
 ##Ria
 #setwd("/Users/ria/Downloads/Data_mining_project")
@@ -16,7 +16,7 @@ library("tidyverse")
 library("dplyr")
 library(randomForest)
 library(caret)
-library(dataMaid)
+
 library(rstatix)
 
 ###############
@@ -199,8 +199,8 @@ p1 <-plot +
 library(ggplot2)
 library("patchwork")
 
-# Adding GMRT on paper to original dataset
-df_total3 <- df %>% mutate(gmrt_on_paper = (gmrt_on_paper1 + gmrt_on_paper2 + gmrt_on_paper3 + gmrt_on_paper4 + gmrt_on_paper5+gmrt_on_paper6+gmrt_on_paper7+gmrt_on_paper8+gmrt_on_paper9+gmrt_on_paper10+gmrt_on_paper11+gmrt_on_paper12+gmrt_on_paper13+gmrt_on_paper14+gmrt_on_paper15+gmrt_on_paper16+gmrt_on_paper17+gmrt_on_paper18+gmrt_on_paper19+gmrt_on_paper20+gmrt_on_paper21+gmrt_on_paper22+gmrt_on_paper23+gmrt_on_paper24+gmrt_on_paper25))
+# Adding overall mean pressure to original dataset
+df_total3 <- df %>% mutate(pressure_mean_total = (pressure_mean1 + pressure_mean2 + pressure_mean3 + pressure_mean4 + pressure_mean5+pressure_mean6+pressure_mean7+pressure_mean8+pressure_mean9+pressure_mean10+pressure_mean11+pressure_mean12+pressure_mean13+pressure_mean14+pressure_mean15+pressure_mean16+pressure_mean17+pressure_mean18+pressure_mean19+pressure_mean20+pressure_mean21+pressure_mean22+pressure_mean23+pressure_mean24+pressure_mean25))
 summary(df_total3)
 
 # Adding total time to original dataset
@@ -218,11 +218,11 @@ df_total2 <- df_total %>% select(c(ID, total_time))
 ###############
 # FIGURES ----
 
-# Boxplot for gmrt on paper vs. class ----
-p2 <- ggplot(data = df_total3, aes(x = class, y = gmrt_on_paper, fill = class)) + geom_boxplot() + theme_minimal() +theme(legend.position = "none",
+# Boxplot for mean pressure vs. class ----
+p2 <- ggplot(data = df_total3, aes(x = class, y = pressure_mean_total, fill = class)) + geom_boxplot() + theme_minimal() +theme(legend.position = "none",
                                                                                                                           text = element_text(family = "serif", face = "bold" )) +
   guides(color = guide_legend(title = NULL)) +
-  ggtitle("Total gmrt on paper") 
+  ggtitle("Mean Pressure for Healthy Participants and Alzheimer's Patients") 
 plot(p2)
 
 # Boxplot for total time vs. class ----
