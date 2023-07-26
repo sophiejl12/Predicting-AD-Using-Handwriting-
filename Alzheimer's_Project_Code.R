@@ -16,6 +16,8 @@ library("tidyverse")
 library("dplyr")
 library(randomForest)
 library(caret)
+install.packages("dataMaid")
+library(dataMaid)
 
 ###############
 # DATA CLEANING ----
@@ -28,6 +30,11 @@ str(df)
 
 ## Changing class to factor ----
 df$class <- factor(df$class)
+
+# get rid of the outliers
+df <- df[!(row.names(df) %in% c("169"))]
+
+dataMaid::identifyOutliers(df$total_time23, nMax = 1)
 
 ## Saving cleaned dataset
 write.csv(df, file = "Alzheimers_data_cleaned.csv", row.names = FALSE)
@@ -185,14 +192,15 @@ plot +
              linetype = "solid",
              color = "grey70") +
   # Adjusting scale
-  scale_x_continuous(limits = c(-1, 11)) +
+  scale_x_continuous(limits = c(-1, 175 )) +
   # Label the x and y axes
   labs(x = "Importance", y = "group") +
   # Setting theme
   theme_bw() +
   theme(legend.position = "none",
-        text = element_text(family = "serif")) +
+        text = element_text(family = "serif", face = "bold" )) +
   guides(color = guide_legend(title = NULL)) +
+
   # Plot them in order of importance
   scale_y_discrete(limits = top_10_features$group[order(top_10_features$total_imp, decreasing = FALSE)])
 
@@ -200,7 +208,7 @@ plot +
 
 # Plotting with ggplot
 library(ggplot2)
-
+library("patchwork")
 # Improving plot
 
 ## Get accuracy ----
@@ -213,7 +221,9 @@ library(ggplot2)
 ## Feature importance ----
 
 ## Boxplot for most important features vs. class (x-axis) ----
-ggplot(data=, aes(class)) + geom_boxplot()
+
+p2 <- ggplot(data=df, aes(x = class, y = total_time23)) + geom_boxplot()
+
 ## Here, either plot the most important features directly (like mean_gmrt_24),
 
 ## or calculate the mean across all trials for each metric, by group (class = patients/healthy)
