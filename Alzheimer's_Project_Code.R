@@ -9,7 +9,7 @@ getwd()
 #setwd("/Users/sophielawrence/Documents/Data_Mining_Project")
 
 ##Ria
-# setwd("/Users/ria/Downloads/Data_mining_project")
+setwd("/Users/ria/Downloads/Data_mining_project")
 
 ## Loading libraries ----
 library("tidyverse")
@@ -211,6 +211,7 @@ plot +
 # Plotting with ggplot
 library(ggplot2)
 library("patchwork")
+
 # Improving plot
 
 ## Get accuracy ----
@@ -224,7 +225,8 @@ library("patchwork")
 
 ## Boxplot for most important features vs. class (x-axis) ----
 
-p2 <- ggplot(data=df, aes(x = class, y = total_time23)) + geom_boxplot()
+p2 <- ggplot(data = df, aes(x = class, y = total_time23, fill = class)) + geom_boxplot() + theme_minimal()
+plot(p2)
 
 ## Here, either plot the most important features directly (like mean_gmrt_24),
 
