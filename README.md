@@ -1,1 +1,3 @@
-# Data_mining_project
+# Predicting Alzheimer's Disease Using Handwriting
+##Introduction
+###Alzheimer’s Disease (AD) is a neurodegenerative disease that affects motor and cognitive function. Due to AD’s effect on motor control, handwriting dynamics can be used as an early diagnostic tool. The aim of this project is to identify which handwriting tests are the most indicative of AD, then use these variables to create a Random Forest Model that will predict if a person has AD. The model was trained on the DARWIN dataset, which includes data from 174 participants, some with Alzheimer’s Disease, and some healthy. The participants completed 25 tasks total and 18 measurements were taken from each task. 
