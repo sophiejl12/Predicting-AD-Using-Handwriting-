@@ -120,7 +120,6 @@ rf_model2 <-
   )
 
 rf_model2
-### Error rate: 11.517%
 
 ### Feature importance ----
 
