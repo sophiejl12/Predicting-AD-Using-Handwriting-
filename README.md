@@ -18,7 +18,7 @@
 #### The healthy group has, on average, higher measures for mean pressure on paper. The patient group has a larger range of measures for mean pressure on paper. An inability to apply adequate pressure can effect writing performance, leading to an increase in overall writing time.
 
 
-####The code for this project is located in the Alzheimer's_Project_Code file above.
+#### The code for this project is located in the Alzheimer's_Project_Code file above.
 
 ## Conclusion
 ### Our final Random Forest model correctly identifies which people have AD based on their handwriting data with an accuracy of 99.28%. With this model, handwriting can be used to identify early signs of AD in a simple, effective, and non-invasive manor. Handwriting data can be collected without a doctor, and requires less money and resources than clinical diagnostic tests. In addition to early diagnosis, handwriting characteristics can be used to continually monitor the effects of treatments. Due to the fact that patients experience varying degrees of AD severity, our model could be improved by identifying which handwriting results correlate with early stage AD, and which results correlate with later stage AD. With this distinction, the model could be trained to identify the severity of each patients’ disease. 
