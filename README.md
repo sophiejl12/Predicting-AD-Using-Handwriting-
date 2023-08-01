@@ -4,14 +4,14 @@
 
 ## Results 
 
-## <img width="850" alt="Screen Shot 2023-08-01 at 5 43 21 PM" src="https://github.com/sophiejl12/Predicting-AD-Using-Handwriting-/assets/137425759/0bbc454e-ab09-44bb-b9f6-e30b35303afe">
+### <img width="850" alt="Screen Shot 2023-08-01 at 5 43 21 PM" src="https://github.com/sophiejl12/Predicting-AD-Using-Handwriting-/assets/137425759/0bbc454e-ab09-44bb-b9f6-e30b35303afe">
 
-### To make the model as accurate as possible, it was important to identify which handwriting tests were the most effective in distinguishing AD patients from healthy individuals. Based on the results shown by the graph above, 
+#### To make the model as accurate as possible, it was important to identify which handwriting tests were the most effective in distinguishing AD patients from healthy individuals. Based on the results shown by the graph above, 
 
-## ![Rplot01](https://github.com/sophiejl12/Predicting-AD-Using-Handwriting-/assets/137425759/0fedd36e-1ab6-43fa-8581-069c50d38efa)
+### ![Rplot01](https://github.com/sophiejl12/Predicting-AD-Using-Handwriting-/assets/137425759/0fedd36e-1ab6-43fa-8581-069c50d38efa)
 ### Explain graph
 
-## ![0fba3dae-efeb-4d75-a48d-f826d9ae7624](https://github.com/sophiejl12/Predicting-AD-Using-Handwriting-/assets/137425759/4b880be7-1bd4-4953-91da-df08b4a54aed)
+### ![0fba3dae-efeb-4d75-a48d-f826d9ae7624](https://github.com/sophiejl12/Predicting-AD-Using-Handwriting-/assets/137425759/4b880be7-1bd4-4953-91da-df08b4a54aed)
 ### Explain graph 
 
 
