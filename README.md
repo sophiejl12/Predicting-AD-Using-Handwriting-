@@ -2,6 +2,9 @@
 ## Introduction
 ### Alzheimer’s Disease (AD) is a neurodegenerative disease that affects motor and cognitive function. Due to AD’s effect on motor control, handwriting dynamics can be used as an early diagnostic tool. The aim of this project is to identify which handwriting tests are the most indicative of AD, then use these variables to create a Random Forest Model that will predict if a person has AD. The model was trained on the DARWIN dataset, which includes data from 174 participants, some with Alzheimer’s Disease, and some healthy. The participants completed 25 tasks total and 18 measurements were taken from each task. 
 
+
+#### The code for this project is located in the Alzheimer's_Project_Code file above.
+
 ## Results 
 
 ### Plot 1 
@@ -16,9 +19,6 @@
 ### Plot 3
 ### ![0fba3dae-efeb-4d75-a48d-f826d9ae7624](https://github.com/sophiejl12/Predicting-AD-Using-Handwriting-/assets/137425759/4b880be7-1bd4-4953-91da-df08b4a54aed)
 #### The healthy group has, on average, higher measures for mean pressure on paper. The patient group has a larger range of measures for mean pressure on paper. An inability to apply adequate pressure can effect writing performance, leading to an increase in overall writing time.
-
-
-#### The code for this project is located in the Alzheimer's_Project_Code file above.
 
 ## Conclusion
 ### Our final Random Forest model correctly identifies which people have AD based on their handwriting data with an accuracy of 99.28%. With this model, handwriting can be used to identify early signs of AD in a simple, effective, and non-invasive manor. Handwriting data can be collected without a doctor, and requires less money and resources than clinical diagnostic tests. In addition to early diagnosis, handwriting characteristics can be used to continually monitor the effects of treatments. Due to the fact that patients experience varying degrees of AD severity, our model could be improved by identifying which handwriting results correlate with early stage AD, and which results correlate with later stage AD. With this distinction, the model could be trained to identify the severity of each patients’ disease. 
